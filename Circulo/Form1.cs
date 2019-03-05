@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
+
 
 
 namespace Circulo
@@ -27,6 +29,8 @@ namespace Circulo
         public Form1()
         {
             InitializeComponent();
+            label1.Text = "";
+            label2.Text = "";
         }
 
         private void panel1_MouseClick(object sender, MouseEventArgs e)
@@ -53,9 +57,9 @@ namespace Circulo
         }
         private void CirculoDDA(int Xc, int Yc, int Xr, int Yr)
         {
-
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
             double Yk=10;
-            int y;
             a = (Yr - Yc);
             b = (Xr - Xc);
             a = Math.Pow(a, 2);
@@ -75,12 +79,15 @@ namespace Circulo
                 panel1.CreateGraphics().DrawEllipse(pen, Xk + Xc , -(Convert.ToInt64(Yk)) + Yc, 5, 5);//(x,-y)      2 Octante
                 panel1.CreateGraphics().DrawEllipse(pen, Convert.ToInt64(Yk) + Xc, -(Xk) + Yc, 5, 5);//(y,-x)       1 Octante
             }
+            label1.Text = String.Format("{0}", sw.Elapsed.TotalMilliseconds);
         }
         private void CirculoMDP(int Xc, int Yc, int Xr, int Yr)
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
             double x;
             int y = 0;
-            int e = 0;
+            double e = 0;
             x = r;
             while(y<=x)
             {
@@ -94,13 +101,18 @@ namespace Circulo
                 panel1.CreateGraphics().DrawEllipse(pen1, y + Xc, -(Convert.ToInt64(x)) + Yc, 5, 5);//(y,-x)     1 Octante
                 e = e + (2*y) + 1;
                 y = y + 1;
-                if((2*e)>(2*x-1))
+                if((2*e)>((2*x)-1))
                 {
                     x = x - 1;
-                    e =(e - (2 * e) + 1);
+                    e =(e - (2 * x) + 1);
                 }
             }
+            label2.Text = String.Format("{0}", sw.Elapsed.TotalMilliseconds);
+        }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            panel1.Refresh();
         }
     }
 }
